@@ -4,7 +4,7 @@ services:
   app:
     build: .
     env_file:
-      - .env
+      - app.env
     container_name: medods-auth-service
     ports:
       - "3000:3000"
@@ -16,7 +16,7 @@ services:
   db:
     image: postgres:13
     env_file:
-      - .env
+      - app.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
