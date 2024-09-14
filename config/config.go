@@ -2,6 +2,8 @@ package config
 
 import (
 	"errors"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/spf13/viper"
@@ -23,11 +25,15 @@ type AppConfig struct {
 }
 
 func LoadEnv() (*AppConfig, error) {
-	viper.AddConfigPath(".")
-	viper.SetConfigFile("env")
-	viper.SetConfigName("app")
-	viper.AutomaticEnv()
-	err := viper.ReadInConfig()
+	workingDir, err := os.Getwd()
+	if err != nil {
+		return nil, errors.New("Could not get the current working directory")
+	}
+	projectRoot := filepath.Join(workingDir, "../") 
+
+	viper.SetConfigFile(filepath.Join(projectRoot, ".env"))
+
+	err = viper.ReadInConfig()
 	if err != nil {
 		return nil, errors.New("Could not read config file")
 	}

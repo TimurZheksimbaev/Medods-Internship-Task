@@ -27,12 +27,12 @@ type Claims struct {
 }
 
 func (ts *TokenService) GenerateAccessToken(userID, ip string) (string, error) {
-	expirationTime := time.Now().Add(ts.appConfig.TokenExpiration * time.Minute)
+	expirationTime := time.Now().Add(ts.appConfig.TokenExpiration * time.Minute).Unix()
 	claims := &Claims{
 		UserID: userID,
 		IP:     ip,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
+			ExpiresAt: expirationTime,
 		},
 	}
 
