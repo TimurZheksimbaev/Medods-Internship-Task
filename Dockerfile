@@ -1,25 +1,19 @@
-FROM golang:1.22-alpine3.20 AS builder
-
+FROM golang:1.20-alpine AS builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-
-RUN go build -o authentication_service ./main.go
+RUN go build -o main .
 
 FROM alpine:latest
+WORKDIR /app
 
-WORKDIR /root/
+COPY --from=builder /app/main .
 
+COPY app.env ./app.env
 
-COPY --from=builder /app/authentication_service .
+EXPOSE 8080
 
-
-
-RUN chmod +x ./authentication_service
-
-
-
-CMD ["./authentication_service"]
+CMD ["./main"]
