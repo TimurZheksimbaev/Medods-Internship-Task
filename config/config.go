@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 
 	"path/filepath"
 	"time"
@@ -40,5 +41,7 @@ func LoadEnv() (*AppConfig, error) {
 }
 
 func ConnectToDB(config *AppConfig) (*gorm.DB, error) {
-	return gorm.Open(postgres.Open(config.DatabaseUrl), &gorm.Config{})
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable",
+		config.DatabaseHost, config.DatabaseUsername, config.DatabasePassword, config.DatabaseName, config.DatabasePort)
+	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
 }
