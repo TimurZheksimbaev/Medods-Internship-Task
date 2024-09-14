@@ -2,13 +2,19 @@ package storage_test
 
 import (
 	"medods-internship/config"
+	"medods-internship/models"
+	"medods-internship/storage"
 	"medods-internship/utils"
+	"os"
+	"path/filepath"
 	"testing"
-	"medods-internship/models"  
-	"medods-internship/storage" 
+
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
+
+var projectRoot, _ = filepath.Abs("../") 
+var err = os.Chdir(projectRoot)
 
 func setupDB() (*gorm.DB, error) {
 	appConfig, err := config.LoadEnv()

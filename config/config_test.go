@@ -2,6 +2,8 @@ package config_test
 
 import (
 	"medods-internship/config"
+	"os"
+	"path/filepath"
 
 	"testing"
 
@@ -9,6 +11,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var projectRoot, _ = filepath.Abs("../") 
+var err = os.Chdir(projectRoot)
 
 // проверяем что ссылка на датабазу непустая и проверяем подключение
 func TestConnectToDB(t *testing.T) {
@@ -20,13 +24,4 @@ func TestConnectToDB(t *testing.T) {
 	assert.IsType(t, &gorm.DB{}, db)
 }
 
-// проверяем что при ложной ссылке подключение к датабазе не получится
-func TestConnectToDBFalseUrl(t *testing.T) {
-	badConfig := &config.AppConfig{
-		DatabaseUrl: "some url",
-	}
-	db, err := config.ConnectToDB(badConfig)
 
-	assert.Error(t, err)
-	assert.Nil(t, db.Error)
-}

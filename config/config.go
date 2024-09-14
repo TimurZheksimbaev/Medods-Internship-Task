@@ -2,7 +2,7 @@ package config
 
 import (
 	"errors"
-	"os"
+
 	"path/filepath"
 	"time"
 
@@ -24,14 +24,11 @@ type AppConfig struct {
 	TokenSecret string `mapstructure:"TOKEN_SECRET"`
 }
 
-func LoadEnv() (*AppConfig, error) {
-	workingDir, err := os.Getwd()
-	if err != nil {
-		return nil, errors.New("Could not get the current working directory")
-	}
-	projectRoot := filepath.Join(workingDir, "../") 
 
-	viper.SetConfigFile(filepath.Join(projectRoot, ".env"))
+func LoadEnv() (*AppConfig, error) {
+	projectRoot, err := filepath.Abs(".")
+	envPath := filepath.Join(projectRoot, "app.env")
+	viper.SetConfigFile(envPath)
 
 	err = viper.ReadInConfig()
 	if err != nil {

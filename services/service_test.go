@@ -1,15 +1,21 @@
 package services_test
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 
+	"medods-internship/config"
+	"medods-internship/services"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/assert"
-	"medods-internship/config"    
-	"medods-internship/services"  
 )
+
+var projectRoot, _ = filepath.Abs("../") 
+var err = os.Chdir(projectRoot)
 
 var appConfig, _ = config.LoadEnv()
 var tokenService = services.NewTokenService(appConfig)

@@ -11,11 +11,17 @@ import (
 	"medods-internship/utils"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
+
+var projectRoot, _ = filepath.Abs("../") 
+var err = os.Chdir(projectRoot)
+
 
 func setupTestRouter() *gin.Engine {
 	// инициализируем компоненты проекта
