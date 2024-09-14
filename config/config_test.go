@@ -28,5 +28,5 @@ func TestConnectToDBFalseUrl(t *testing.T) {
 	db, err := config.ConnectToDB(badConfig)
 
 	assert.Error(t, err)
-	assert.Nil(t, db)
+	assert.Nil(t, db.Error)
 }

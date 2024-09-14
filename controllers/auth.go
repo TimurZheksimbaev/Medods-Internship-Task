@@ -110,8 +110,7 @@ func (tc *TokenController) RefreshTokens(c *gin.Context) {
 
 	// IP пользователся изменился, поэтому отправляем ему сообщение на почту
 	if claims.IP != c.ClientIP() {
-		// Send email warning
-		utils.SendEmailWarning(claims.UserID)
+		utils.SendEmail(claims.IP, c.ClientIP(), claims.UserID)
 	}
 
 	// генерируем новые access и refresh токены

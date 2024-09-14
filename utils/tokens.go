@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"fmt"
 	"log"
+	"net/smtp"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -19,11 +21,36 @@ func CompareRefreshTokens(hashedToken, token string) bool {
 	return err == nil
 }
 
+func SendEmail(oldIP, newIP, userID string) {
+	// данные отправителя
+	from := "email@example.com"
+	password := "password123"
 
-func SendEmailWarning(userID string) {
-	// Mock email sending
-	log.Printf("Sending email warning to user %s\n", userID)
+	// адрес получателя
+	to := []string{
+		"recipient@example.com",
+	}
+
+	// SMTP-сервер и порт
+	smtpHost := "smtp.gmail.com" 
+	smtpPort := "587"
+
+	// авторизуемся
+	auth := smtp.PlainAuth("", from, password, smtpHost)
+
+	// сообщение
+	message := []byte(fmt.Sprintf("Ваш IP адрес изменился. Старый адрес: %s Новый адрес: %s", oldIP, newIP))
+
+	// отправляем сообщение
+	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
+	if err != nil {
+		log.Printf("Failed to send email to user: %s", userID)
+	}
+
+	log.Printf("Successfully sent email to user: %s !", userID)
 }
+
+
 
 func LogExit(err error) {
 	if err != nil {
